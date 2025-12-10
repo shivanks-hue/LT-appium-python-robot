@@ -2,16 +2,19 @@
 Library  AppiumLibrary
 
 *** Variables ***
-
+#${username}             username
+#${accesskey}            accesskey
+${LT_GRID_URL}          https://${username}:${accesskey}@mobile-hub.lambdatest.com/wd/hub
 ${platformName}         ios
-#${platformVersion}     15  # Set your default version
+${platformVersion}      15  # Set your default version
 ${deviceName}           iPhone.*
 ${visual}               True
 ${network}              True
 ${isRealMobile}         True
-${LT_APP_ID}            ''
-${LT_GRID_URL}          ''
+#${LT_APP_ID}            'APPID'
 ${TIMEOUT}              3000
+${devicelog}            True
+
 
 
 *** Keywords ***
@@ -20,7 +23,7 @@ Open test app
     [Timeout]   ${TIMEOUT}
     ${CAPABILITIES}=    Create Dictionary
     ...   platformName=${platformName}
-    ...   platformVersion=${version}
+    ...   platformVersion=${platformVersion}
     ...   deviceName=${deviceName}
     ...   visual=${visual}
     ...   network=${network}
@@ -39,9 +42,10 @@ Open test app
     EXCEPT
         ${APP_ID}=    Set Variable    lt://proverbial-ios
     END
-    ${REMOTE_URL}=   Set Variable       https://%{LT_USERNAME}:%{LT_ACCESS_KEY}@${REMOTE_URL}/wd/hub
+    ${REMOTE_URL}=   Set Variable       https://${username}:${accesskey}@${REMOTE_URL}/wd/hub
 
-    Open Application  ${REMOTE_URL}  platformName=ios  platformVersion=${version}  deviceName=${deviceName}  visual=${visual}  network=${network}  devicelog=${devicelog}  isRealMobile=${isRealMobile}  app=${APP_ID}  name=LT_Appium_Robot_App_iOS  build=LT_Appium_Robot_App_Automation
+
+    Open Application  ${REMOTE_URL}  platformName=ios  platformVersion=${platformVersion}  deviceName=${deviceName}  visual=${visual}  network=${network}  devicelog=${devicelog}  isRealMobile=${isRealMobile}  app=${APP_ID}  name=LT_Appium_Robot_App_iOS  build=LT_Appium_Robot_App_Automation
 
 Close test app
     Close All Applications
